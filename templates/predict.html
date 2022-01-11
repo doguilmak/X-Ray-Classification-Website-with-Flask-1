@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Prediction of Picture</title>
+    <style>
+        body {
+            font-size: 16px;
+            background-color: gray;
+        }
+
+        a {
+            margin-bottom: 20px;
+        }
+
+        .container {
+                background-color: black;
+                border-radius: 5px;
+                border: 0;
+                color: white;
+                margin-top: 30px;
+                padding-top: 15px;
+                border-radius: 5px;
+                height: 400px;
+        }
+
+        .alert.light {
+            background-color: white;
+            color: black;
+            margin-top: 25px;
+        }
+
+        .closebtn {
+            margin-left: 15px;
+            color: black;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+    <!-- Container -->
+    <div class="container" style="text-align: center;">
+
+        <a href="index.html" class="btn btn-primary btn-lg btn-block" role="button">Homepage</a>
+
+        <h2>Upload X-Ray</h2>
+        <label><i>*Upload X-Ray image and press Predict</i></label>
+        <hr>
+
+        <form method="POST" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" name="image" id="image">
+                    <label class="custom-file-label" for="image">Select image...</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-secondary">Predict</button>
+        </form>
+
+        {%if xrayClass%}
+        <div class="alert light">
+            <span class="closebtn">&times;</span>
+            Predicted as <b>{{xrayClass}}</b>
+        </div>
+        {%endif %}
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        var close = document.getElementsByClassName("closebtn");
+        var i;
+
+        for (i = 0; i < close.length; i++) {
+            close[i].onclick = function () {
+                var div = this.parentElement;
+                div.style.opacity = "0";
+                setTimeout(function () { div.style.display = "none"; }, 600);
+            }
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
