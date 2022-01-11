@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict X-Ray Class</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            font-size: 16px;
+            background-color: gray;
+        }
+
+        .container {
+            background-color: black;
+            border-radius: 5px;
+            border: 0;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-radius: 5px;
+            height: 100%;
+        }
+
+        button {
+            margin-top: 25px;
+            width: 50%;
+        }
+
+        div {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        a {
+            margin-bottom: 20px;
+        }
+
+        .closebtn {
+            margin-left: 15px;
+            color: black;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        /* Modify hr */
+        hr.hrstyle {
+            border: 1px solid white;
+            width: 70%;
+        }
+
+        /* Images */
+        img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+            border-radius: 5px;
+        }
+
+        /* Table */
+        table,
+        tr,
+        td,
+        th {
+            border: 2px solid white;
+            border-collapse: collapse;
+        }
+
+        table {
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        th,
+        td {
+            padding: 10px;
+        }
+
+        tbody tr {
+            text-align: center;
+        }
+
+        tbody tr:hover {
+            background: #3a3a3a;
+        }
+
+        /* Footer */
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            background-color: #007BFF;
+            border-radius: 5px 5px 0px 0px;
+        }
+
+        .footer-content h3 {
+            font-size: 2.1rem;
+            font-weight: 500;
+            text-transform: capitalize;
+            line-height: 3rem;
+        }
+
+        .footer-content p {
+            max-width: 500px;
+            margin: 10px auto;
+            line-height: 28px;
+            font-size: 14px;
+            color: #cacdd2;
+        }
+
+        .socials {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem 0 1.5rem 0;
+        }
+
+        .socials li {
+            margin: 0 10px;
+        }
+
+        .socials a {
+            text-decoration: none;
+            color: #fff;
+            padding: 5px;
+        }
+
+        .socials a i {
+            font-size: 2rem;
+            width: 20px;
+            transition: color .4s ease;
+        }
+
+        .socials a:hover i {
+            color: black;
+        }
+
+        /********** Large devices only **********/
+        @media (min-width: 1200px) {
+            img {
+                margin-left: auto;
+                margin-right: auto;
+                width: 40%;
+            }
+        }
+
+        /********** Medium devices only **********/
+        @media (min-width: 992px) and (max-width: 1199px) {
+            img {
+                margin-left: auto;
+                margin-right: auto;
+                width: 40%;
+            }
+        }
+
+        /********** Small devices only **********/
+        @media (min-width: 768px) and (max-width: 991px) {}
+
+        /********** Extra small devices only **********/
+        @media (max-width: 767px) {}
+
+        /********** Super extra small devices (e.g., iPhone 4) **********/
+        @media (max-width: 479px) {}
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container" style="color: white;">
+
+            <a href="predict.html" class="btn btn-primary btn-lg btn-block" role="button">Make Prediction</a>
+
+            <h1 style="text-align: center;">Classify X-Ray Images with Convolutional Neural Networks</h1>
+            <hr>
+
+            <!-- 1. Introduction to Pneumonia -->
+
+            <!-- 1.1. What is pneumonia? -->
+            <h2>What is pneumonia?</h2>
+            <p>Pneumonia is swelling (inflammation) of the tissue in one or both lungs. It's usually caused by a
+                bacterial infection. It can also be caused by a virus, such as coronavirus (COVID-19). Pneumonia is
+                usually caused by infection with viruses or bacteria, and less commonly by other microorganisms.
+                Identifying the responsible pathogen can be difficult. Diagnosis is often based on symptoms and physical
+                examination. Chest X-rays, blood tests, and culture of the sputum may help confirm the diagnosis.
+            </p><br>
+
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Chest_radiograph_in_influensa_and_H_influenzae%2C_posteroanterior%2C_annotated.jpg/690px-Chest_radiograph_in_influensa_and_H_influenzae%2C_posteroanterior%2C_annotated.jpg"
+                alt="Pneumonia">
+            <p style="text-align: center; margin-top: 3px;">Fig 1. - Pneumonia on X-ray</p>
+
+            <!-- 1.2. Who is affected by pneumonia? -->
+            <h2>Who is affected by pneumonia?</h2>
+            <p>Pneumonia can affect people of any age, but it's more common, and can be more serious, in certain
+                groups of people, such as the very young or the elderly. People in these groups are more likely to need
+                hospital treatment if they develop pneumonia.
+            </p><br>
+
+            <!-- 1.3. What causes pneumonia? -->
+            <h2>What causes pneumonia?</h2>
+            <p>Pneumonia is usually the result of a bacterial infection. As well as bacterial pneumonia, other types
+                include:
+            </p>
+
+            <ol>
+                <li>viral pneumonia – caused by a virus, such as coronavirus.</li>
+                <li>aspiration pneumonia – caused by breathing in vomit, a foreign object, such as a peanut, or a
+                    harmful substance, such as smoke or a chemical.</li>
+                <li>fungal pneumonia – rare in the UK and more likely to affect people with a weakened immune system.
+                </li>
+                <li>gospital-acquired pneumonia – pneumonia that develops in hospital while being treated for another
+                    condition or having an operation; people in intensive
+                    care on breathing machines are particularly at risk
+                    of developing ventilator-associated pneumonia.</li>
+            </ol><br>
+
+            <!-- 1.4. Diagnosing pneumonia -->
+            <h2>Diagnosing pneumonia</h2>
+            <p>A doctor may be able to diagnose pneumonia by asking about your symptoms and examining your chest.
+                Further tests may be needed in some cases.
+
+                Pneumonia can be difficult to diagnose because it shares many symptoms with other conditions, such as
+                the common cold, bronchitis and asthma.
+
+                To help make a diagnosis, a doctor may ask you:</p>
+            <ol>
+                <li>Whether you feel breathless or you're breathing faster than usual</li>
+                <li>How long you have had your cough, and whether you're coughing up mucus and what colour it is</li>
+                <li>If the pain in your chest is worse when you breathe in or out</li>
+            </ol><br>
+
+            <!-- 1.5. Sources -->
+
+            <h2>Sources</h2>
+            <ul>
+                <li><a href="https://www.nhs.uk/conditions/pneumonia/" class="text-decoration-none"
+                        target="_blank">https://www.nhs.uk/conditions/pneumonia/</a></li>
+                <li><a href="https://en.wikipedia.org/wiki/Pneumonia" class="text-decoration-none"
+                        target="_blank">https://en.wikipedia.org/wiki/Pneumonia</a></li>
+            </ul>
+
+            <br>
+            <hr class="hrstyle">
+            <br>
+
+            <!-- 2. Introduction to Machine Learning Model -->
+            <div>
+
+                <!-- 2.1. Dataset -->
+                <h2>Dataset</h2>
+                <p>Dataset has 5216 images belonging to 2 classes in total. <b>Test</b> folder has 624 X-Ray images,
+                    <b>train</b> folder has 5216 X-Ray images and <b>val</b> folder has 18 X-Ray images.
+                </p>
+                <br>
+
+                <!-- 2.2. Plots -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img class="img-responsive"
+                                src="https://raw.githubusercontent.com/doguilmak/X-Ray-Classification-Website-with-Flask/main/uploads/normal.jpeg"
+                                style="height: 300px; width: 300px;">
+                            <p style="text-align: center; margin-top: 3px;">Fig 2. - Normal result X-ray scan</p>
+                        </div>
+                        <div class="col-md-6">
+                            <img class="img-responsive"
+                                src="https://raw.githubusercontent.com/doguilmak/X-Ray-Classification-Website-with-Flask/main/uploads/pneumonia.jpeg"
+                                style="height: 300px; width: 300px;">
+                            <p style="text-align: center; margin-top: 3px;">Fig 3. - Pneumonia result X-ray scan</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 2.3. Methodology -->
+                <h2>Methodology</h2>
+                <p>Within the classification study; there are two different results, in other words, two different
+                    output
+                    layer results such as PNEUMONIA or NORMAL. Since the study was carried out with a binary dataset,
+                    the
+                    trained model was compiled with binary_crossentropy loss function.</p><br>
+                <p>For understanding the methodology you are free to visit the <a
+                        href="https://poloclub.github.io/cnn-explainer/">CNN Explainer</a> website.</p><br>
+
+                <img src="https://raw.githubusercontent.com/doguilmak/X-Ray-Classification-Website-with-Flask/main/plot/binary_input_and_output_model.png"
+                    alt="binary_input_and_output_model">
+                <p style="text-align: center; margin-top: 3px;">Fig 4. - Model Structure</p>
+                <br>
+
+
+                <!-- 2.4. Confusion Matrix -->
+                <p style="text-align: center;"><b>Confusion Matrix</b></p>
+                <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; text-align: center;  margin-left: auto;
+            margin-right: auto;" width="400">
+                    <tr>
+                        <td height="19" width="50%">1151</td>
+                        <td height="19" width="50%">190</td>
+                    </tr>
+                    <tr>
+                        <td height="16" width="50%">409</td>
+                        <td height="16" width="50%">3466</td>
+                    </tr>
+                </table>
+
+                <br>
+
+                <p style="text-align: center;">
+                    <b>Validation accuracy : 0.8845<br>
+                        Accuracy : 0.8267</b>
+                </p>
+                <br>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="footer-content">
+                <h3 style="text-align: center; padding-left: 40px;">Contact Me</h3>
+                <p style="text-align: center; color: white; padding-left: 30px;">If you have something to say to me
+                    please contact me</p>
+                <ul class="socials">
+                    <li><a href="https://github.com/doguilmak"><i class="fa fa-github"></i></a></li>
+                    <li><a href="https://twitter.com/Doguilmak"><i class="fa fa-twitter"></i></a></li>
+                </ul>
+            </div>
+
+    </header>
+
+    <!-- jQuery (Bootstrap JS plugins depend on it) -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
