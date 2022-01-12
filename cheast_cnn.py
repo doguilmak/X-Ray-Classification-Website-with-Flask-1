@@ -165,44 +165,6 @@ sonuc['test'] = test_labels
 cm = confusion_matrix(test_labels, pred)
 print ("Confusion Matrix:\n", cm)
 
-#%%
-# PART 6 - Prediction from Valitadion Pictures
-
-from keras.preprocessing import image
-import numpy as np
-
-# Predict NORMAL class
-image = image
-image_name=[1427, 1430, 1431, 1436, 1437, 1438, 1440, 1442]
-print('\nPrediction of NORMAL class')
-for i in image_name:
-    i = str(i)
-    path = 'chest_xray/val/NORMAL/NORMAL2-IM-' + i + '-0001' + '.jpeg'
-    img = image.load_img(path, target_size=(64, 64))
-    x = image.img_to_array(img)
-    x = np.expand_dims(x, axis=0) 
-    images = np.vstack([x])
-    classes_normal = classifier.predict(images, batch_size=1)
-    print(classes_normal)
-
-# Predict PNEUMONIA class
-person=[1946, 1947, 1949, 1950, 1951, 1952, 1954]
-bacteria=[4875, 4876, 4880, 4881, 4882, 4883, 4886]
-print('\nPrediction of PNEUMONIA class')
-for i in person:
-    index=int(person.index(i))
-    bac=bacteria[index]  
-    
-    bac = str(bac)
-    i = str(i)    
-    path = 'chest_xray/val/PNEUMONIA/person' + i + '_bacteria_'+ bac +'.jpeg'
-    img = image.load_img(path, target_size=(64, 64))
-    x = image.img_to_array(img)
-    x = np.expand_dims(x, axis=0) 
-    images = np.vstack([x])
-    classes_pneumonia = classifier.predict(images, batch_size=1)
-    print(classes_pneumonia)
-
 end = time.time()
 cal_time = end - start
 print("\nTook {} seconds to classificate objects.".format(cal_time))
